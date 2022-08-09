@@ -13,6 +13,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Flex, Box, Text, Button } from "@chakra-ui/react";
+import axios from "axios";
+
+import { fetchForSale } from "../hooks/fetchForSale";
+import { fetchForRent } from "../hooks/fetchForRent";
 
 const Banner = ({
   purpose,
@@ -49,10 +53,13 @@ const Banner = ({
   </Flex>
 );
 
-export default function Home() {
+const Home = () => {
+  const { forSaleData } = fetchForSale();
+  const { forRentData } = fetchForRent();
+  console.log(forSaleData, forRentData);
+
   return (
-    <div className="container">
-      <h1> Hello World </h1>
+    <Box>
       <Banner
         purpose="Rent A Home"
         title1="Rental Homes for"
@@ -63,6 +70,11 @@ export default function Home() {
         linkName="/search?purpose=for-rent"
         imageUrl="https://bayut-production.s3.eu-central-1.amazonaws.com/image/145426814/33973352624c48628e41f2ec460faba4"
       />
+      {/* properties */}
+
+      <Flex flexWrap="wrap">
+        {/* fetch properties and map them over here */}
+      </Flex>
       <Banner
         purpose="Buy a Home"
         title1="Buy Homes for"
@@ -73,6 +85,8 @@ export default function Home() {
         linkName="/search?purpose=for-sale"
         imageUrl="https://bayut-production.s3.eu-central-1.amazonaws.com/image/110993385/6a070e8e1bae4f7d8c1429bc303d2008"
       />
-    </div>
+    </Box>
   );
-}
+};
+
+export default Home;
