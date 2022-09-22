@@ -39,7 +39,8 @@ export default function Charcter({ character }) {
   );
 }
 
-export async function getStaticProps({ params }) {
+// Next.js will pre-render this page on each request using the data returned by getServerSideProps.
+export async function getServerSideProps({ params }) {
   const res = await axios.get(
     `https://last-airbender-api.herokuapp.com/characters/?name=${params.characterId.replace(
       /\-/g,
@@ -56,7 +57,7 @@ export async function getStaticProps({ params }) {
 }
 
 // the dynamic routing syntax
-// getStaticPaths requires using getStaticProps
+// getStaticPaths requires using getStaticProps/getServerSideProps
 
 export async function getStaticPaths() {
   const res = await axios.get(
