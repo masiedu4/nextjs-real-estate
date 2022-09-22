@@ -15,12 +15,12 @@ import Link from "next/link";
 import React from "react";
 
 const styles = {
-  card: ``,
-  name: "text-xs flex text-center mt-2 ",
+  card: `p-4`,
+  name: "text-xs flex justify-center text-center mt-2 ",
 };
 const CharacterCard = ({ name, image }) => {
   return (
-    <div>
+    <div className={styles.card}>
       <Image src={image} width={200} height={200} />
       <p className={styles.name}>{name}</p>
     </div>

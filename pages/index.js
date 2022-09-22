@@ -20,12 +20,12 @@ const Home = ({ characters }) => {
   return characters ? (
     <>
       <div className="p-12">
-        <div className="grid grid-cols-4 justify-center  space-x-8 space-y-8">
-          {characters.map((character, i) => (
+        <div className="grid grid-cols-5 justify-center p-12">
+          {characters.map((character) => (
             <CharacterCard
-              key={i}
-              name={character.Name}
-              image={character.PicUrl}
+              key={character._id}
+              name={character.name}
+              image={character.photoUrl}
             />
           ))}
         </div>
@@ -41,7 +41,7 @@ export default Home;
 // fetching all characters here.
 export async function getStaticProps() {
   const res = await axios.get(
-    "https://futuramaapi.herokuapp.com/api/v2/characters"
+    `https://last-airbender-api.herokuapp.com/api/v1/characters?perPage=100&page=1`
   );
   const characters = await res.data;
 

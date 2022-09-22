@@ -12,50 +12,64 @@
  **/
 import Image from "next/image";
 import React from "react";
+import axios from "axios";
 
-export default function Philip({ character }) {
-  return (
+export default function Charcter({ character }) {
+  const {
+    photoUrl,
+    name,
+    gender,
+    profession,
+    predecessor,
+    affiliation,
+    weapon,
+  } = character;
+  return character ? (
     <>
-      <Image
-        src={character.PicUrl}
-        width={300}
-        height={300}
-        alt={character.Name}
-      />
-      <h1> {character.Name}</h1>
-      <p> Planet: {character.Planet} </p>
-      <p> Profession: {character.Profession}</p>
+      <Image src={photoUrl} width={300} height={300} alt={name} />
+      <h1> Name: {name}</h1>
+      <p> Gender: {gender} </p>
+      <p> Profession: {profession}</p>
+      <p> Predecessor : {predecessor}</p>
+      <p> Affiliation : {affiliation} </p>
+      <p> Weapon : {weapon}</p>
     </>
+  ) : (
+    <p> Loading Info...</p>
   );
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(
-    `https://futuramaapi.herokuapp.com/api/v2/characters?search=${params.characterId}`
+  const res = await axios.get(
+    `https://last-airbender-api.herokuapp.com/characters/?name=${params.characterId.replace(
+      /\-/g,
+      "+"
+    )}`
   );
-  const characters = await res.data;
+  const character = await res.data;
 
   return {
     props: {
-      character: characters[0],
+      character: character,
     },
   };
 }
 
 // the dynamic routing syntax
+// getStaticPaths requires using getStaticProps
+
 export async function getStaticPaths() {
-  const res = await fetch(
-    "https://futuramaapi.herokuapp.com/api/v2/characters"
+  const res = await axios.get(
+    `https://last-airbender-api.herokuapp.com//api/v1/characters?perPage=100`
   );
   const characters = await res.data;
 
   return {
     paths: characters.map((character) => {
-      const characterId = character.Name.toLowerCase().replace(/ /g, "-");
+      const characterId = character.name.toLowerCase().replace(/ /g, "-");
+
       return {
-        params: {
-          characterId,
-        },
+        params: characterId,
       };
     }),
     fallback: false,
